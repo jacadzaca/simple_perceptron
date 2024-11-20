@@ -8,6 +8,13 @@ import numpy
 def sigmoid(x):
     return 1 / (1 + numpy.exp(-x))
 
+def sign(x):
+    return numpy.where(numpy.sign(x) < 0, 0, x)
+
+
+def relu(x):
+    return numpy.maximum(0, x)
+
 
 class Perceptron:
     def __init__(
@@ -89,16 +96,29 @@ def main():
         validation_data = setosa_or_versicolor_rows[training_data_length:]
 
         parameters_choices = [
-            (1, 0.1),
-            (2, 0.1),
-            (1, 0.01),
-            (10, 0.01)
+            (1, 0.1, sigmoid),
+            (2, 0.1, sigmoid),
+            (1, 0.01, sigmoid),
+            (10, 0.01, sigmoid),
+            (1, 0.1, sign),
+            (2, 0.1, sign),
+            (1, 0.01, sign),
+            (10, 0.01, sign),
+            (1, 0.1, relu),
+            (2, 0.1, relu),
+            (1, 0.01, relu),
+            (10, 0.01, relu),
         ]
-        for max_training_iterations, learning_rate in parameters_choices:
+        for max_training_iterations, learning_rate, activation_function in parameters_choices:
             print(
-                f'Training a preceptron using {max_training_iterations} iterations and a learning rate of {learning_rate}',
+                f'Training a preceptron using {max_training_iterations} iterations, '
+                f'a learning rate of {learning_rate} and {activation_function.__name__} as an activation function',
             )
-            iris_perceptron = Perceptron()
+            iris_perceptron = Perceptron(
+                learning_rate=learning_rate,
+                activation_function=activation_function,
+                max_training_iterations=max_training_iterations,
+            )
             iris_perceptron.fit(
                 predictors,
                 expected_predictions,
