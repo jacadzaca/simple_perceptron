@@ -100,14 +100,17 @@ def main():
             (2, 0.1, sigmoid),
             (1, 0.01, sigmoid),
             (10, 0.01, sigmoid),
+            (10**5, 0.01, sigmoid),
             (1, 0.1, sign),
             (2, 0.1, sign),
             (1, 0.01, sign),
             (10, 0.01, sign),
+            (10**5, 0.01, sign),
             (1, 0.1, relu),
             (2, 0.1, relu),
             (1, 0.01, relu),
             (10, 0.01, relu),
+            (10**5, 0.01, relu),
         ]
         for max_training_iterations, learning_rate, activation_function in parameters_choices:
             print(
