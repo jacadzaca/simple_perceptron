@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import csv
+import time
 import random
 
 import numpy
@@ -122,10 +123,13 @@ def main():
                 activation_function=activation_function,
                 max_training_iterations=max_training_iterations,
             )
+
+            start = time.time()
             iris_perceptron.fit(
                 predictors,
                 expected_predictions,
             )
+            end = time.time()
 
             error_count = 0
             for observation in validation_data:
@@ -138,6 +142,8 @@ def main():
 
             errror_rate = error_count / len(validation_data)
             print(f'This perceptron has an error rate of {errror_rate}')
+            training_time = end - start
+            print(f'Training this perceptron took {training_time} seconds')
 
 
 
