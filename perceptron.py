@@ -132,7 +132,6 @@ def main():
                 actual = observation[4]
                 if prediction != actual:
                     error_count += 1
-                print(f'Perceptron predicted {prediction} while actual was {actual}')
 
             errror_rate = error_count / len(validation_data)
             print(f'This perceptron has an error rate of {errror_rate}')
