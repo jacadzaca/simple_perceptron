@@ -86,19 +86,37 @@ def main():
         training_data = setosa_or_versicolor_rows[:training_data_length]
         predictors = numpy.array([observation[:4] for observation in training_data])
         expected_predictions = numpy.array([observation[4] for observation in training_data])
-        iris_perceptron = Perceptron()
-        iris_perceptron.fit(
-            predictors,
-            expected_predictions,
-        )
-
         validation_data = setosa_or_versicolor_rows[training_data_length:]
-        for observation in validation_data:
-            prediction = iris_perceptron.predict(
-                numpy.array(observation[:4])
+
+        parameters_choices = [
+            (1, 0.1),
+            (2, 0.1),
+            (1, 0.01),
+            (10, 0.01)
+        ]
+        for max_training_iterations, learning_rate in parameters_choices:
+            print(
+                f'Training a preceptron using {max_training_iterations} iterations and a learning rate of {learning_rate}',
             )
-            actual = observation[4]
-            print(f'Perceptron predicted {prediction} while actual was {actual}')
+            iris_perceptron = Perceptron()
+            iris_perceptron.fit(
+                predictors,
+                expected_predictions,
+            )
+
+            error_count = 0
+            for observation in validation_data:
+                prediction = iris_perceptron.predict(
+                    numpy.array(observation[:4])
+                )
+                actual = observation[4]
+                if prediction != actual:
+                    error_count += 1
+                print(f'Perceptron predicted {prediction} while actual was {actual}')
+
+            errror_rate = error_count / len(validation_data)
+            print(f'This perceptron has an error rate of {errror_rate}')
+
 
 
 if __name__ == '__main__':
