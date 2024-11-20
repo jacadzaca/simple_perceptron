@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import csv
 import random
 
 import numpy
@@ -52,7 +53,52 @@ class Perceptron:
 
 
 def main():
-    pass
+    with open('iris.csv') as csv_file:
+        reader = csv.reader(
+            csv_file,
+            delimiter=',',
+        )
+        setosa_or_versicolor_rows = []
+        for row in reader:
+            if row[4] == 'setosa':
+                setosa_or_versicolor_rows.append(
+                    [
+                        float(row[0]),
+                        float(row[1]),
+                        float(row[2]),
+                        float(row[3]),
+                        0,
+                    ],
+                )
+            elif row[4] == 'versicolor':
+                setosa_or_versicolor_rows.append(
+                    [
+                        float(row[0]),
+                        float(row[1]),
+                        float(row[2]),
+                        float(row[3]),
+                        1,
+                    ],
+                ) 
+        random.shuffle(setosa_or_versicolor_rows)
+
+        training_data_length = round(0.8 * len(setosa_or_versicolor_rows))
+        training_data = setosa_or_versicolor_rows[:training_data_length]
+        predictors = numpy.array([observation[:4] for observation in training_data])
+        expected_predictions = numpy.array([observation[4] for observation in training_data])
+        iris_perceptron = Perceptron()
+        iris_perceptron.fit(
+            predictors,
+            expected_predictions,
+        )
+
+        validation_data = setosa_or_versicolor_rows[training_data_length:]
+        for observation in validation_data:
+            prediction = iris_perceptron.predict(
+                numpy.array(observation[:4])
+            )
+            actual = observation[4]
+            print(f'Perceptron predicted {prediction} while actual was {actual}')
 
 
 if __name__ == '__main__':
